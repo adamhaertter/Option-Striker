@@ -2,3 +2,19 @@
     filter: grayscale(100%);
     opacity: 0.5;
 }
+
+.counterpick {
+    outline-color: gold;
+}
+
+img {
+    cursor: pointer;
+    border-radius: 15px; 
+    outline: 2px solid mediumseagreen; 
+    outline-offset: 2px;
+}
+
+img:hover {
+    transform: scale(1.05);
+    transition: 0.3s;
+}

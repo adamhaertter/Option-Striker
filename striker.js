@@ -34,9 +34,8 @@ function renderImages() {
     const img = document.createElement("img");
     img.src = `img/${item}.png`;
     img.alt = item;
-    img.style.width = "100px"; // set image width
-    img.style.margin = "10px"; // set margin between images
 
+    // Toggle 'struck' class on click
     img.addEventListener("click", () => {
         img.classList.toggle("struck");
     });

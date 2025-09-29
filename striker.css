@@ -8,6 +8,8 @@
 }
 
 img {
+    width: 20%;
+    margin: 10px;
     cursor: pointer;
     border-radius: 15px; 
     outline: 2px solid mediumseagreen; 

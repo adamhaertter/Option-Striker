@@ -31,16 +31,23 @@ function renderImages() {
     container.innerHTML = ""; // clear existing images
     const selected = selectRandomOptions();
     selected.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "output_item";
+        container.appendChild(div);
     const img = document.createElement("img");
     img.src = `img/${item}.png`;
     img.alt = item;
 
     // Toggle 'struck' class on click
-    img.addEventListener("click", () => {
-        img.classList.toggle("struck");
+        div.addEventListener("click", () => {
+            div.classList.toggle("struck");
     });
 
-    container.appendChild(img);
+        const label = document.createElement("label");
+        label.innerText = item;
+
+        div.appendChild(img);
+        div.appendChild(label);
     });
 }
 

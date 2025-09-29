@@ -1,5 +1,6 @@
 
-const MSS_DATA = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
+const TEST_DATA = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
+const MSS_DATA = ["Bowser Castle", "Bowser Jr. Playroom", "Daisy Cruiser Day", "Daisy Cruiser Night", "DK Jungle Day", "DK Jungle Night", "Luigi Mansion", "Mario Stadium Day", "Mario Stadium Night", "Peach Ice Garden Day", "Peach Ice Garden Night", "Wario City Day", "Wario City Night", "Yoshi Park Day", "Yoshi Park Night"];
 
 let numOptions = 5;
 let data = MSS_DATA
@@ -34,14 +35,14 @@ function renderImages() {
         const div = document.createElement("div");
         div.className = "output_item";
         container.appendChild(div);
-    const img = document.createElement("img");
-    img.src = `img/${item}.png`;
-    img.alt = item;
-
-    // Toggle 'struck' class on click
+        const img = document.createElement("img");
+        img.src = `img/${item}.png`;
+        img.alt = item;
+        
+        // Toggle 'struck' class on click
         div.addEventListener("click", () => {
             div.classList.toggle("struck");
-    });
+        });
 
         const label = document.createElement("label");
         label.innerText = item;

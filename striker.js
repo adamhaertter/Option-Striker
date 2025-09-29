@@ -36,6 +36,11 @@ function renderImages() {
     img.alt = item;
     img.style.width = "100px"; // set image width
     img.style.margin = "10px"; // set margin between images
+
+    img.addEventListener("click", () => {
+        img.classList.toggle("struck");
+    });
+
     container.appendChild(img);
     });
 }

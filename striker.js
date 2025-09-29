@@ -1,13 +1,16 @@
 
 const MSS_DATA = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
 
-const numOptions = 5;
-const data = MSS_DATA
+let numOptions = 5;
+let data = MSS_DATA
 const datasetControl = [MSS_DATA] // Add more datasets as needed
 
 function updateData(options, dataset) {
     numOptions = options
     data = datasetControl[dataset]
+    
+    const numInput = document.getElementById("num_options");
+    numInput.max = data.length;
 }
 
 function selectRandomOptions() {
@@ -24,18 +27,26 @@ function selectRandomOptions() {
 }
 
 function renderImages() {
-      const container = document.getElementById("output_segment");
-      container.innerHTML = ""; // clear existing images
-      const selected = selectRandomOptions();
-      selected.forEach((item, i) => {
-        const img = document.createElement("img");
-        img.src = `img/${item}.png`;
-        img.alt = item;
-        img.style.width = "100px"; // set image width
-        img.style.margin = "10px"; // set margin between images
-        container.appendChild(img);
-      });
-    }
+    const container = document.getElementById("output_segment");
+    container.innerHTML = ""; // clear existing images
+    const selected = selectRandomOptions();
+    selected.forEach((item, i) => {
+    const img = document.createElement("img");
+    img.src = `img/${item}.png`;
+    img.alt = item;
+    img.style.width = "100px"; // set image width
+    img.style.margin = "10px"; // set margin between images
+    container.appendChild(img);
+    });
+}
 
+function generate() {
+    let options = parseInt(document.getElementById("num_options").value);
+    //let dataset = parseInt(document.getElementById("dataset_select").value); // Eventually, for multiple datasets
+    updateData(options, 0);
+    renderImages();
+}
+
+updateData(numOptions, 0);
 renderImages();
-document.getElementById("generate_button").addEventListener("click", renderImages);
+document.getElementById("generate_button").addEventListener("click", generate);

@@ -12,35 +12,28 @@ p, label, h1, h2, h3, h4, h5, h6 {
 }
 
 img {
-    width: auto;
-    max-width: 300px;
-    margin: 10px;
+    width: max(17vw, 150px);
     cursor: pointer;
     border-radius: 15px; 
     outline: 2px solid mediumseagreen; 
     outline-offset: 2px;
+    transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
 
 img:hover {
     transform: scale(1.05);
-    transition: 0.3s;
 }
 
+/* Container for all output items */
 #output_segment {
-    text-align: center;
-    margin-top: 20px;
-    justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 1%;
 }
 
-#output_segment label {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: black;
-}
-
+/* Output item wrapper (image + label) */
 .output_item {
     display: flex;
     flex-direction: column;
@@ -48,5 +41,16 @@ img:hover {
     text-align: center;
     width: auto;
     height: auto;
+    margin: 10px;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
+
+/* Label styling */
+.output_item label {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: black;
+    margin-top: 5px;
+    text-align: center;
+}
+

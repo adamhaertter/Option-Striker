@@ -99,15 +99,10 @@ div#app {
 
 img {
     width: max(17vw, 150px);
-    cursor: pointer;
     border-radius: 15px; 
     outline: 2px solid mediumseagreen; 
     outline-offset: 2px;
-    transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-}
-
-img:hover {
-    transform: scale(1.05);
+    transition: filter 0.2s ease, opacity 0.2s ease;
 }
 
 /* Container for all output items */
@@ -130,7 +125,12 @@ img:hover {
     height: auto;
     margin: 10px;
     position: relative;
+    cursor: pointer;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.output_item:hover {
+    transform: scale(1.05);
 }
 
 /* Label styling */

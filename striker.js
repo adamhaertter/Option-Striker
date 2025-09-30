@@ -60,11 +60,37 @@ function generate() {
 
 function toggleDarkMode() {
     document.body.classList.toggle("lightmode");
-    document.header.classList.toggle("lightmode");
     console.log("Toggled dark mode");
+}
+
+function toggleGreenScreen() {
+    const target = document.getElementById("output_segment")
+    const button = document.getElementById("green_screen_button")
+    //target.style.backgroundColor = target.style.backgroundColor === "green" ? "transparent" : "green";
+    target.style.backgroundColor = getNextScreenColor(getComputedStyle(target).backgroundColor);
+    button.style.backgroundColor = getNextScreenColor(getComputedStyle(button).backgroundColor);
+
+    console.log("Toggled green screen");
+}
+
+function getNextScreenColor(currentColor) {
+    let newColor = "rgb(0, 255, 0)"
+    switch(currentColor) {
+        case "rgb(0, 255, 0)":  newColor = "rgb(255, 0, 255)"; break;       // Green to Magenta
+        case "rgb(255, 0, 255)": newColor = "rgb(0, 0, 255)"; break;        // Magenta to Blue
+        case "rgb(0, 0, 255)": newColor = "rgb(0, 255, 255)"; break;        // Blue to Cyan
+        case "rgb(0, 255, 255)": newColor = "rgb(200, 191, 231)"; break;    // Cyan to Lavender
+        case "rgb(200, 191, 231)": newColor = "rgb(255, 255, 0)"; break;    // Lavender to Yellow
+        case "rgb(255, 255, 0)": newColor = "rgb(0, 0, 0)"; break;          // Yellow to Black
+        case "rgb(0, 0, 0)": newColor = "rgb(255, 255, 255)"; break;        // Black to White
+        case "rgb(255, 255, 255)": newColor = "transparent"; break;           // White to Transparent
+        // Cases reset to green on their own
+    }
+    return newColor;
 }
 
 updateData(numOptions, 0);
 renderImages();
 document.getElementById("generate_button").addEventListener("click", generate);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
+document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);

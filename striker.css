@@ -15,7 +15,7 @@ body {
 /* Header styles */
 header {
     text-align: center;
-    margin: 0px;;
+    margin: 0px;
     border-bottom: 1px solid gray;
     background-color: #0e0e11;
     width:100%;
@@ -30,19 +30,26 @@ header h1 {
     font-size: 2.5em;
 }
 
+.buttons {
+    display:flex;
+    align-self: right;
+    justify-content: right;
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+
 header button {
     border: none;
     cursor: pointer;
-    position: absolute;
-    top: 30px;
-    right: 20px;
+    display: inline-block;
     padding: 7px;
+    margin: 2px;
     border-radius: 50%;
-    transition: background-color 0.3s ease;
 }
 
-header button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+header button#green_screen_button {
+    background-color: rgb(0, 255, 0);
 }
 
 div#app {
@@ -79,7 +86,8 @@ img:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin: 20px 1%;
+    padding: 20px 10px;
+    width: 100%
 }
 
 /* Output item wrapper (image + label) */

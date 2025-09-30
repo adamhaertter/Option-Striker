@@ -28,11 +28,27 @@ function resetCoinFlip() {
     
     coin.className = "";
     resultDiv.innerHTML = "";
-    startButton.style.display = "block";
-    flipAgainButton.style.display = "none";
+    smoothShow(startButton);
+    smoothHide(flipAgainButton);
     
     // Reset coin to show heads side
     coin.style.transform = "rotateY(0deg)";
+}
+
+// Helper functions for smooth show/hide animations
+function smoothShow(element) {
+    element.style.display = "block";
+    element.style.opacity = "0";
+    // Force reflow to ensure display change is applied
+    element.offsetHeight;
+    element.style.opacity = "1";
+}
+
+function smoothHide(element) {
+    element.style.opacity = "0";
+    setTimeout(() => {
+        element.style.display = "none";
+    }, 300); // Match CSS transition duration
 }
 
 function updateCoinNames() {
@@ -57,11 +73,11 @@ function startCoinFlip() {
     // Update coin with player names
     updateCoinNames();
     
-    // Hide start button and flip again button
+    // Smoothly hide start button and flip again button
     const startButton = document.getElementById("start_flip_button");
     const flipAgainButton = document.getElementById("flip_again_button");
-    startButton.style.display = "none";
-    flipAgainButton.style.display = "none";
+    smoothHide(startButton);
+    smoothHide(flipAgainButton);
     
     performFlip();
 }
@@ -76,8 +92,14 @@ function performFlip() {
     const player1Name = player1Input.value.trim() || "Player 1";
     const player2Name = player2Input.value.trim() || "Player 2";
     
-    // Clear previous result
-    resultDiv.innerHTML = "";
+    // Clear previous result smoothly
+    if (resultDiv.innerHTML.trim() !== "") {
+        resultDiv.style.opacity = "0";
+        setTimeout(() => {
+            resultDiv.innerHTML = "";
+            resultDiv.style.opacity = "1";
+        }, 300);
+    }
     
     // Random coin flip (0 = heads/player1, 1 = tails/player2)
     const coinResult = Math.floor(Math.random() * 2);
@@ -95,8 +117,15 @@ function performFlip() {
     
     // Show result after animation completes
     setTimeout(() => {
+        // Fade in the result
+        resultDiv.style.opacity = "0";
         resultDiv.innerHTML = `<div class="winner-announcement">🎯 ${winner} bans first!</div>`;
-        flipAgainButton.style.display = "block";
+        setTimeout(() => {
+            resultDiv.style.opacity = "1";
+        }, 50);
+        
+        // Show flip again button
+        smoothShow(flipAgainButton);
         console.log(`Coin flip result: ${winner} bans first`);
     }, 3200);
 }

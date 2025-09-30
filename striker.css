@@ -52,15 +52,22 @@ header button#green_screen_button {
     background-color: rgb(0, 255, 0);
 }
 
+header button#transparency_button {
+    background-color: red;
+}
+
 div#app {
     margin: 20px;
 }
 
 /* Image styles */
-
 .struck {
     filter: grayscale(100%);
     opacity: 0.5;
+}
+
+.notransparency .struck {
+    opacity: 1;   
 }
 
 .counterpick {

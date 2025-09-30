@@ -89,8 +89,18 @@ function getNextScreenColor(currentColor) {
     return newColor;
 }
 
+function toggleTransparency() {
+    // Give all images under output_segment a notransparency class
+    const container = document.getElementById("output_segment");
+    container.classList.toggle("notransparency");
+    const button = document.getElementById("transparency_button");
+    button.style.backgroundColor = button.style.backgroundColor === "yellow" ? "red" : "yellow";
+    console.log("Toggled transparency");
+}
+
 updateData(numOptions, 0);
 renderImages();
 document.getElementById("generate_button").addEventListener("click", generate);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
 document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);
+document.getElementById("transparency_button").addEventListener("click", toggleTransparency);

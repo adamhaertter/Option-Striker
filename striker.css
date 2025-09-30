@@ -180,7 +180,7 @@ img {
 }
 
 /* Banned overlay text */
-.banned-overlay {
+div.banned-overlay {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -198,6 +198,12 @@ img {
     border: 2px solid #ff4444;
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
     opacity: 1;
+}
+
+div.banned-overlay.player2 {
+    background-color: rgba(0, 60, 255, 0.95);
+    border: 2px solid #4470ff;
+    box-shadow: 0 0 15px rgba(0, 89, 255, 0.8);
 }
 
 /* Protected overlay text for last map protection */

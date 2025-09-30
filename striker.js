@@ -40,35 +40,13 @@ function renderImages() {
         
         // Toggle 'struck' class and banned overlay on click
         div.addEventListener("click", () => {
-            const container = document.getElementById("output_segment");
-            const allMaps = container.querySelectorAll(".output_item");
-            const struckMaps = container.querySelectorAll(".output_item.struck");
-            const isCurrentlyStruck = div.classList.contains("struck");
-            
-            // If trying to ban a map (not unbanning), check if this would be the last map
-            if (!isCurrentlyStruck) {
-                const mapsAfterBan = struckMaps.length + 1;
-                if (mapsAfterBan >= allMaps.length) {
-                    // Prevent banning the last map - show visual feedback
-                    showLastMapProtection(div);
-                    return;
-                }
-            }
-            
-            div.classList.toggle("struck");
-            
-            // Check if banned overlay already exists
-            const existingBannedOverlay = div.querySelector(".banned-overlay");
-            if (existingBannedOverlay) {
-                // Remove the banned overlay
-                existingBannedOverlay.remove();
-            } else {
-                // Create and add the banned overlay
-                const bannedOverlay = document.createElement("div");
-                bannedOverlay.className = "banned-overlay";
-                bannedOverlay.textContent = "BANNED";
-                div.appendChild(bannedOverlay);
-            }
+            strike(div, "P1")
+        });
+
+        // Right click
+        div.addEventListener("contextmenu", function(event) {
+            event.preventDefault(); // Prevent the default context menu
+            strike(div, "P2", true); // Strike as Player 2
         });
 
         const label = document.createElement("label");
@@ -77,6 +55,41 @@ function renderImages() {
         div.appendChild(img);
         div.appendChild(label);
     });
+}
+
+function strike(div, playerName, isPlayer2 = false) {
+    const container = document.getElementById("output_segment");
+    const allMaps = container.querySelectorAll(".output_item");
+    const struckMaps = container.querySelectorAll(".output_item.struck");
+    const isCurrentlyStruck = div.classList.contains("struck");
+    
+    // If trying to ban a map (not unbanning), check if this would be the last map
+    if (!isCurrentlyStruck) {
+        const mapsAfterBan = struckMaps.length + 1;
+        if (mapsAfterBan >= allMaps.length) {
+            // Prevent banning the last map - show visual feedback
+            showLastMapProtection(div);
+            return;
+        }
+    }
+    
+    div.classList.toggle("struck");
+    
+    // Check if banned overlay already exists
+    const existingBannedOverlay = div.querySelector(".banned-overlay");
+    if (existingBannedOverlay) {
+        // Remove the banned overlay
+        existingBannedOverlay.remove();
+    } else {
+        // Create and add the banned overlay
+        const bannedOverlay = document.createElement("div");
+        bannedOverlay.classList.add("banned-overlay"); 
+        if(isPlayer2) {
+            bannedOverlay.classList.add("player2"); // Add player2 class for styling
+        }
+        bannedOverlay.textContent = `BANNED (${playerName})`;
+        div.appendChild(bannedOverlay);
+    }
 }
 
 function generate() {

@@ -178,11 +178,11 @@
 }
 
 #flip_again_button.visible {
-    max-height: 100px;
-    opacity: 1;
-    margin-top: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    max-height: 100px !important;
+    opacity: 1 !important;
+    margin-top: 20px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 
 #flip_again_button:hover {

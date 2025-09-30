@@ -10,6 +10,10 @@ function openCoinModal() {
     // Update coin with current input values or defaults
     updateCoinNames();
     
+    // Ensure proper initial state
+    const flipAgainButton = document.getElementById("flip_again_button");
+    flipAgainButton.classList.remove("visible");
+    
     // Focus on first input for accessibility
     document.getElementById("player1_modal").focus();
 }
@@ -26,13 +30,16 @@ function resetCoinFlip() {
     const startButton = document.getElementById("start_flip_button");
     const flipAgainButton = document.getElementById("flip_again_button");
     
-    coin.className = "";
+    // Properly reset coin animations
+    coin.classList.remove("flip-heads", "flip-tails");
+    coin.style.animation = "none";
+    coin.offsetHeight; // Force reflow
+    coin.style.animation = "";
+    coin.style.transform = "rotateY(0deg)";
+    
     resultDiv.innerHTML = "";
     startButton.classList.remove("hidden");
     flipAgainButton.classList.remove("visible");
-    
-    // Reset coin to show heads side
-    coin.style.transform = "rotateY(0deg)";
 }
 
 function updateCoinNames() {
@@ -76,6 +83,9 @@ function performFlip() {
     const player1Name = player1Input.value.trim() || "Player 1";
     const player2Name = player2Input.value.trim() || "Player 2";
     
+    // Hide flip again button during flip to prevent double-clicks
+    flipAgainButton.classList.remove("visible");
+    
     // Clear previous result
     resultDiv.innerHTML = "";
     
@@ -83,22 +93,35 @@ function performFlip() {
     const coinResult = Math.floor(Math.random() * 2);
     const winner = coinResult === 0 ? player1Name : player2Name;
     
-    // Reset any previous animations
-    coin.className = "";
+    // Reset any previous animations with forced reflow
+    coin.classList.remove("flip-heads", "flip-tails");
+    coin.style.animation = "none";
+    
+    // Force browser reflow to ensure animation reset is processed
+    coin.offsetHeight;
+    
+    // Reset transform and clear any inline styles
+    coin.style.transform = "rotateY(0deg)";
+    coin.style.animation = "";
+    
+    // Force another reflow before starting new animation
+    coin.offsetHeight;
     
     // Start the flip animation
-    if (coinResult === 0) {
-        coin.classList.add("flip-heads");
-    } else {
-        coin.classList.add("flip-tails");
-    }
+    setTimeout(() => {
+        if (coinResult === 0) {
+            coin.classList.add("flip-heads");
+        } else {
+            coin.classList.add("flip-tails");
+        }
+    }, 10); // Small delay to ensure reset is complete
     
-    // Show result after animation completes
+    // Show result after animation completes (3200ms + 10ms delay)
     setTimeout(() => {
         resultDiv.innerHTML = `<div class="winner-announcement">🎯 ${winner} bans first!</div>`;
         flipAgainButton.classList.add("visible");
         console.log(`Coin flip result: ${winner} bans first`);
-    }, 3200);
+    }, 3210);
 }
 
 function flipAgain() {

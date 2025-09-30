@@ -14,29 +14,49 @@ body {
 
 /* Header styles */
 header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 0px;
     border-bottom: 1px solid gray;
     background-color: #0e0e11;
-    width:100%;
+    width: 100%;
+    padding: 10px 15px;
+    position: relative;
 }
 
-body.lightmode header  {
-    background-color:  oklch(90.844% 0.0082 286.055);
+body.lightmode header {
+    background-color: oklch(90.844% 0.0082 286.055);
 }
 
-header h1 {
+.coin_flip_section {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 15px;
+}
+
+.header_content {
+    text-align: center;
+    flex: 1;
+    margin: 0;
+}
+
+.header_content h1 {
     margin: 0px;
     font-size: 2.5em;
 }
 
+.header_content p {
+    margin: 0;
+}
+
 .buttons {
-    display:flex;
-    align-self: right;
-    justify-content: right;
-    position: fixed;
-    top: 5px;
-    right: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    right: 15px;
 }
 
 header button {

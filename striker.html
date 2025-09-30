@@ -8,8 +8,20 @@
 	
 <body>
     <header>
-        <h1>Option Striker</h1>
-        <p>A way to make decisions</p>
+        <div class="coin_flip_section">
+            <button id="coin_flip_button" title="Coin Flip - Who Bans First?">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Coin Flip</span>
+            </button>
+        </div>
+        <div class="header_content">
+            <h1>Option Striker</h1>
+            <p>A way to make decisions</p>
+        </div>
         <div class="buttons">
             <button id="transparency_button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,13 +32,6 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M20.3847 2.87868C19.2132 1.70711 17.3137 1.70711 16.1421 2.87868L14.0202 5.00052L13.313 4.29332C12.9225 3.9028 12.2894 3.9028 11.8988 4.29332C11.5083 4.68385 11.5083 5.31701 11.8988 5.70754L17.5557 11.3644C17.9462 11.7549 18.5794 11.7549 18.9699 11.3644C19.3604 10.9739 19.3604 10.3407 18.9699 9.95018L18.2629 9.24316L20.3847 7.12132C21.5563 5.94975 21.5563 4.05025 20.3847 2.87868Z" fill="currentColor"/>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9297 7.09116L4.1515 14.8693C3.22786 15.793 3.03239 17.169 3.5651 18.2842L1.99994 19.8493L3.41415 21.2635L4.97931 19.6984C6.09444 20.2311 7.4705 20.0356 8.39414 19.112L16.1723 11.3338L11.9297 7.09116ZM13.3439 11.3338L11.9297 9.91959L5.56571 16.2835C5.17518 16.6741 5.17518 17.3072 5.56571 17.6978C5.95623 18.0883 6.5894 18.0883 6.97992 17.6978L13.3439 11.3338Z" fill="currentColor"/>
-                </svg>
-            </button>
-            <button id="coin_flip_button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-                    <path d="M8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </button>
             <button id="dark_mode_button">
@@ -77,6 +82,7 @@
                 </div>
             </div>
             <div id="flip_result"></div>
+            <button id="flip_again_button" style="display: none;">🎲 Flip Again</button>
         </div>
     </div>
 </body>

@@ -24,10 +24,12 @@ function resetCoinFlip() {
     const coin = document.getElementById("animated_coin");
     const resultDiv = document.getElementById("flip_result");
     const startButton = document.getElementById("start_flip_button");
+    const flipAgainButton = document.getElementById("flip_again_button");
     
     coin.className = "";
     resultDiv.innerHTML = "";
     startButton.style.display = "block";
+    flipAgainButton.style.display = "none";
     
     // Reset coin to show heads side
     coin.style.transform = "rotateY(0deg)";
@@ -52,20 +54,30 @@ function updateCoinNames() {
 }
 
 function startCoinFlip() {
+    // Update coin with player names
+    updateCoinNames();
+    
+    // Hide start button and flip again button
+    const startButton = document.getElementById("start_flip_button");
+    const flipAgainButton = document.getElementById("flip_again_button");
+    startButton.style.display = "none";
+    flipAgainButton.style.display = "none";
+    
+    performFlip();
+}
+
+function performFlip() {
     const player1Input = document.getElementById("player1_modal");
     const player2Input = document.getElementById("player2_modal");
     const coin = document.getElementById("animated_coin");
     const resultDiv = document.getElementById("flip_result");
-    const startButton = document.getElementById("start_flip_button");
+    const flipAgainButton = document.getElementById("flip_again_button");
     
     const player1Name = player1Input.value.trim() || "Player 1";
     const player2Name = player2Input.value.trim() || "Player 2";
     
-    // Update coin with player names
-    updateCoinNames();
-    
-    // Hide start button
-    startButton.style.display = "none";
+    // Clear previous result
+    resultDiv.innerHTML = "";
     
     // Random coin flip (0 = heads/player1, 1 = tails/player2)
     const coinResult = Math.floor(Math.random() * 2);
@@ -84,8 +96,13 @@ function startCoinFlip() {
     // Show result after animation completes
     setTimeout(() => {
         resultDiv.innerHTML = `<div class="winner-announcement">🎯 ${winner} bans first!</div>`;
+        flipAgainButton.style.display = "block";
         console.log(`Coin flip result: ${winner} bans first`);
     }, 3200);
+}
+
+function flipAgain() {
+    performFlip();
 }
 
 // Handle keyboard events
@@ -103,6 +120,7 @@ function initializeCoinFlip() {
     // Coin flip modal event listeners
     document.getElementById("coin_flip_button").addEventListener("click", openCoinModal);
     document.getElementById("start_flip_button").addEventListener("click", startCoinFlip);
+    document.getElementById("flip_again_button").addEventListener("click", flipAgain);
     document.querySelector(".close_button").addEventListener("click", closeCoinModal);
 
     // Update coin names in real-time as user types

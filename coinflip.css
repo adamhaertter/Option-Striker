@@ -1,11 +1,27 @@
-/* Coin flip button in header */
-header button#coin_flip_button {
-    background-color: #FFD700;
+/* Coin flip button styling */
+#coin_flip_button {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
     color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
 }
 
-header button#coin_flip_button:hover {
-    background-color: #FFA500;
+#coin_flip_button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+}
+
+#coin_flip_button span {
+    white-space: nowrap;
 }
 
 /* Modal styles */
@@ -123,6 +139,25 @@ header button#coin_flip_button:hover {
 #start_flip_button:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+#flip_again_button {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #4CAF50, #81C784);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: white;
+}
+
+#flip_again_button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
 }
 
 /* Animated coin styles */

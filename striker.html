@@ -43,8 +43,12 @@
         </div>
     </header>
 
-    <div id="app">
-        <h2>Maps</h2>
+    <div id="app">        
+        <div id="recommended_strike_pattern">
+            <h3>Recommended Strike Pattern:</h3>
+            <div id="strike_pattern_container"></div>
+        </div>
+
         <label for="num_options"># to Generate:</label>
         <div class="number_input_container">
             <button class="increment_btn" id="decrease_btn" type="button">−</button>
@@ -53,11 +57,6 @@
         </div>
         <span class="max_indicator">(max: <span id="max_value">15</span>)</span>
         <button id="generate_button">Reroll</button>
-
-        <div id="recommended_strike_pattern">
-            <h3>Recommended Strike Pattern:</h3>
-            <div id="strike_pattern_container"></div>
-        </div>
             
         <div id="output_segment">
         </div>

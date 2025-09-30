@@ -275,6 +275,7 @@ function showLastMapProtection(mapDiv) {
 
 updateData(numOptions, 0);
 renderImages();
+displayStrikePattern();
 
 // Event listeners
 document.getElementById("generate_button").addEventListener("click", generate);

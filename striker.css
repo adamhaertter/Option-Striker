@@ -118,6 +118,168 @@ div#app {
     margin: 20px;
 }
 
+/* Controls styling */
+.number_input_container {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 8px;
+}
+
+#num_options {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    color: inherit;
+    padding: 8px 10px;
+    font-size: 1em;
+    width: 60px;
+    text-align: center;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.increment_btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: inherit;
+    width: 28px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.increment_btn:first-child {
+    border-radius: 6px 0 0 6px;
+    border-right: none;
+}
+
+.increment_btn:last-child {
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+}
+
+.increment_btn:hover {
+    background: rgba(76, 175, 80, 0.2);
+}
+
+.increment_btn:active {
+    background: rgba(76, 175, 80, 0.3);
+    transform: scale(0.95);
+}
+
+body.lightmode #num_options {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-left: none;
+    border-right: none;
+}
+
+body.lightmode .increment_btn {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+body.lightmode .increment_btn:first-child {
+    border-right: none;
+}
+
+body.lightmode .increment_btn:last-child {
+    border-left: none;
+}
+
+body.lightmode .increment_btn:hover {
+    background: rgba(76, 175, 80, 0.15);
+}
+
+body.lightmode .increment_btn:active {
+    background: rgba(76, 175, 80, 0.25);
+}
+
+.number_input_container:focus-within {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    border-radius: 6px;
+}
+
+#num_options:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #4CAF50;
+}
+
+body.lightmode #num_options:focus {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.lightmode .number_input_container:focus-within {
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+/* Hide default ugly spinners completely */
+#num_options::-webkit-outer-spin-button,
+#num_options::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Hide Firefox spinners */
+#num_options[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+#generate_button {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#generate_button:hover {
+    background: linear-gradient(135deg, #5CBF60, #4CAF50);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#generate_button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.max_indicator {
+    font-size: 0.85em;
+    color: #888;
+    margin-left: 8px;
+    font-style: italic;
+}
+
+body.lightmode .max_indicator {
+    color: #666;
+}
+
+#max_value {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+body.lightmode #max_value {
+    color: #2E7D32;
+}
+
 /* Image styles */
 .struck img {
     filter: grayscale(100%);

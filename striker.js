@@ -147,6 +147,7 @@ function displayStrikePattern() {
     strikeOrder.forEach((strike, index) => {
         const span = document.createElement("span");
         span.className = "strike_pattern_item";
+        span.title = `Player ${index % 2 == 0 ? "1" : "2"}: ${strike} strike${strike > 1 ? "s" : ""}`;
         if(index % 2 != 0) {
             span.classList.add("p2_strike_item");
         }

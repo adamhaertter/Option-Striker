@@ -433,6 +433,7 @@ div.banned-overlay.player2 {
     color: oklch(57.7% 0.245 27.325);
     min-width: 40px;
     text-align: center;
+    cursor: help;
 }
 
 .strike_pattern_item.p2_strike_item {

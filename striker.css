@@ -61,8 +61,11 @@ div#app {
 }
 
 /* Image styles */
-.struck {
+.struck img {
     filter: grayscale(100%);
+}
+
+.struck {
     opacity: 0.5;
 }
 
@@ -106,6 +109,7 @@ img:hover {
     width: auto;
     height: auto;
     margin: 10px;
+    position: relative;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
 
@@ -115,5 +119,26 @@ img:hover {
     font-size: 1.1em;
     margin-top: 5px;
     text-align: center;
+}
+
+/* Banned overlay text */
+.banned-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 0, 0, 0.95);
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none;
+    letter-spacing: 2px;
+    border: 2px solid #ff4444;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+    opacity: 1;
 }
 

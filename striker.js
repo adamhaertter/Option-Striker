@@ -38,9 +38,22 @@ function renderImages() {
         img.src = `img/${item}.png`;
         img.alt = item;
         
-        // Toggle 'struck' class on click
+        // Toggle 'struck' class and banned overlay on click
         div.addEventListener("click", () => {
             div.classList.toggle("struck");
+            
+            // Check if banned overlay already exists
+            const existingBannedOverlay = div.querySelector(".banned-overlay");
+            if (existingBannedOverlay) {
+                // Remove the banned overlay
+                existingBannedOverlay.remove();
+            } else {
+                // Create and add the banned overlay
+                const bannedOverlay = document.createElement("div");
+                bannedOverlay.className = "banned-overlay";
+                bannedOverlay.textContent = "BANNED";
+                div.appendChild(bannedOverlay);
+            }
         });
 
         const label = document.createElement("label");
@@ -100,6 +113,8 @@ function toggleTransparency() {
 
 updateData(numOptions, 0);
 renderImages();
+
+// Event listeners
 document.getElementById("generate_button").addEventListener("click", generate);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
 document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);

@@ -40,6 +40,21 @@ function renderImages() {
         
         // Toggle 'struck' class and banned overlay on click
         div.addEventListener("click", () => {
+            const container = document.getElementById("output_segment");
+            const allMaps = container.querySelectorAll(".output_item");
+            const struckMaps = container.querySelectorAll(".output_item.struck");
+            const isCurrentlyStruck = div.classList.contains("struck");
+            
+            // If trying to ban a map (not unbanning), check if this would be the last map
+            if (!isCurrentlyStruck) {
+                const mapsAfterBan = struckMaps.length + 1;
+                if (mapsAfterBan >= allMaps.length) {
+                    // Prevent banning the last map - show visual feedback
+                    showLastMapProtection(div);
+                    return;
+                }
+            }
+            
             div.classList.toggle("struck");
             
             // Check if banned overlay already exists
@@ -109,6 +124,27 @@ function toggleTransparency() {
     const button = document.getElementById("transparency_button");
     button.style.backgroundColor = button.style.backgroundColor === "yellow" ? "red" : "yellow";
     console.log("Toggled transparency");
+}
+
+function showLastMapProtection(mapDiv) {
+    // Create and show a temporary "DECIDER" overlay
+    const protectedOverlay = document.createElement("div");
+    protectedOverlay.className = "protected-overlay";
+    protectedOverlay.textContent = "DECIDER";
+    mapDiv.appendChild(protectedOverlay);
+    
+    // Add shake animation to the map
+    mapDiv.classList.add("shake-protection");
+    
+    // Remove the overlay and shake effect after animation
+    setTimeout(() => {
+        if (protectedOverlay.parentNode) {
+            protectedOverlay.remove();
+        }
+        mapDiv.classList.remove("shake-protection");
+    }, 1500);
+    
+    console.log("Cannot ban the last remaining map!");
 }
 
 updateData(numOptions, 0);

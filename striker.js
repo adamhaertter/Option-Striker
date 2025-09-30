@@ -133,7 +133,7 @@ function getStrikePattern(n) {
         strikeOrder[0] -= 1;
         strikeOrder.push(1);
     }
-    if(strikeOrder.length %2 == 0) {
+    if(strikeOrder.length %2 == 0 && n > 3) {
         // If even number of turns, ensure P1 goes last by forcing an increase on P2's first ban.
         strikeOrder[1] += strikeOrder.pop();
     }

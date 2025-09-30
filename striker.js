@@ -10,7 +10,13 @@ function updateData(options, dataset) {
     data = datasetControl[dataset]
     
     const numInput = document.getElementById("num_options");
+    const maxDisplay = document.getElementById("max_value");
+    
     numInput.max = data.length;
+    maxDisplay.textContent = data.length;
+    
+    // Validate current value doesn't exceed new max
+    validateInput();
 }
 
 function selectRandomOptions() {
@@ -92,11 +98,60 @@ function strike(div, playerName, isPlayer2 = false) {
     }
 }
 
+function validateInput() {
+    const numInput = document.getElementById("num_options");
+    let value = parseInt(numInput.value);
+    const min = parseInt(numInput.min);
+    const max = parseInt(numInput.max);
+    
+    // Reset to max if value exceeds maximum
+    if (value > max) {
+        value = max;
+        numInput.value = max;
+        
+        // Visual feedback for correction
+        numInput.style.background = 'oklch(50% 0.15 0)'; // Red flash
+        setTimeout(() => {
+            numInput.style.background = '';
+        }, 300);
+    }
+    
+    // Reset to min if value is below minimum
+    if (value < min || isNaN(value)) {
+        value = min;
+        numInput.value = min;
+    }
+    
+    numOptions = value;
+    return value;
+}
+
+
 function generate() {
-    let options = parseInt(document.getElementById("num_options").value);
-    //let dataset = parseInt(document.getElementById("dataset_select").value); // Eventually, for multiple datasets
-    updateData(options, 0);
+    validateInput(); // Ensure valid value before generating
     renderImages();
+}
+
+function incrementValue() {
+    const input = document.getElementById("num_options");
+    const currentValue = parseInt(input.value);
+    const maxValue = parseInt(input.max);
+    
+    if (currentValue < maxValue) {
+        input.value = currentValue + 1;
+        validateInput();
+    }
+}
+
+function decrementValue() {
+    const input = document.getElementById("num_options");
+    const currentValue = parseInt(input.value);
+    const minValue = parseInt(input.min);
+    
+    if (currentValue > minValue) {
+        input.value = currentValue - 1;
+        validateInput();
+    }
 }
 
 function toggleDarkMode() {
@@ -168,3 +223,9 @@ document.getElementById("generate_button").addEventListener("click", generate);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
 document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);
 document.getElementById("transparency_button").addEventListener("click", toggleTransparency);
+
+// Number input validation and controls
+document.getElementById("num_options").addEventListener("input", validateInput);
+document.getElementById("num_options").addEventListener("blur", validateInput);
+document.getElementById("increase_btn").addEventListener("click", incrementValue);
+document.getElementById("decrease_btn").addEventListener("click", decrementValue);

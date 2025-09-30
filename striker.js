@@ -99,84 +99,45 @@ function strike(div, playerName, isPlayer2 = false) {
 }
 
 function getStrikePattern(n) {
-    if(n == 2) return [1]; // Special case for 2 options
-    if(n == 1) return []; // Special case for 1 option
-    let strikePool = n - 1;
-    let strikeArray = new Array();
+    if(n < 2) return [];
+    // Initialization
+    let strikeOrder = [];
+    
+    // Limit strikes per turn
+    const maxStrikesPerTurn = 3;
 
-    // Save the last strike for later.
-    strikePool -= 1;
-    let backHalfStrikes = new Array();
-    backHalfStrikes.push(1); // Save the final strike for later.
+    // Assign each player a number of total strikes 
+    // For odd n, Player 1 gets the extra strike
+    let strikesP1 = Math.ceil((n - 1) / 2);
+    let strikesP2 = Math.floor((n - 1) / 2);
 
-    // Odd overall options
-    if (n%2 === 1 || n > 10) { 
-        strikePool -= 1; // First strike must be single.
-        strikeArray.push(1); 
+    // Alternate strikes until one player runs out
+    let strikesThisTurn = 0;
+    while (strikesP1 > 0 && strikesP2 > 0) {
+        // Player 1's turn
+        strikesThisTurn = Math.min(maxStrikesPerTurn, strikesP1);
+        strikeOrder.push(strikesThisTurn);
+        strikesP1 -= strikesThisTurn;
+        
+        // Player 2's turn
+        strikesThisTurn = Math.min(maxStrikesPerTurn, strikesP2);
+        strikeOrder.push(strikesThisTurn);
+        strikesP2 -= strikesThisTurn;
     }
 
-    if(n <= 10) {
-        // Under 10 options, build up from 2
-        for (banSize = 2; strikePool - banSize >= 0; banSize++) {
-            console.log(`Loop Trace: P1 banSize=${banSize}, strikePool=${strikePool}`);
-            // Player 1
-            strikeArray.push(banSize);
-            strikePool -= banSize;
+    if(strikesP1 > 0) strikeOrder.push(strikesP1);
+    if(strikesP2 > 0) strikeOrder.push(strikesP2);
 
-            // Does player 2 get to strike?
-            if (strikePool - banSize >= 0) {
-                console.log(`Loop Trace: P2 banSize=${banSize}, strikePool=${strikePool}`);
-                backHalfStrikes.push(banSize);
-                strikePool -= banSize;
-            }
-        }
-    } else {
-        // Scale strike sizes by pool size
-        let S = strikePool / 2;
-
-        for(banSize = 3; strikePool > 0 && banSize >= 1; banSize--) {
-            if(strikePool - (2*banSize) < 0) continue;
-            console.log(`Loop Trace: BOTH banSize=${banSize}, strikePool=${strikePool}`);
-            
-            strikeArray.push(banSize);
-            backHalfStrikes.push(banSize);
-            strikePool -= (2*banSize);
-        }
+    // Dock 1 strike from Player 1's first turn and add it on the end to ensure P1 goes last.
+    if(strikeOrder[0] != 1) {
+        strikeOrder[0] -= 1;
+        strikeOrder.push(1);
     }
-
-    // Add the remaining strikes in the middle of the array
-    if (strikePool > 0) {
-        console.log(`Remaining strikes to allocate: ${strikePool}`);
-        if(strikeArray[0] != 1 && strikePool == 1) {
-            strikeArray.unshift(1);
-        } else {
-            strikeArray.push(strikePool);
-        }
-
-        if(n<= 10) {
-            if(strikeArray[0] != 1 && strikePool == 1) {
-                strikeArray.unshift(1);
-            } else {
-                strikeArray.push(strikePool);
-            }
-        } else {
-            if(strikeArray[0] == 1 && strikePool == 1) {
-                strikeArray[0] = 2;
-            } else {
-                const half = strikePool / 2;
-                strikeArray.push(Math.ceil(half));
-                backHalfStrikes.push(Math.floor(half));
-            }
-        }
-        strikePool = 0;
+    if(strikeOrder.length %2 == 0) {
+        // If even number of turns, ensure P1 goes last by forcing an increase on P2's first ban.
+        strikeOrder[1] += strikeOrder.pop();
     }
-
-    // Append the back half strikes in reverse order
-    backHalfStrikes.reverse().forEach((strike) => {
-        strikeArray.push(strike);
-    });
-
-    return strikeArray;
+    return strikeOrder;
 }
 
 function displayStrikePattern() {

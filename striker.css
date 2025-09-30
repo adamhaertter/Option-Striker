@@ -23,6 +23,8 @@ header {
     width: 100%;
     padding: 10px 15px;
     position: relative;
+    box-sizing: border-box;
+    min-height: 80px;
 }
 
 body.lightmode header {
@@ -32,31 +34,37 @@ body.lightmode header {
 .coin_flip_section {
     display: flex;
     align-items: center;
-    position: absolute;
-    left: 15px;
+    flex-shrink: 0;
+    min-width: 120px;
 }
 
 .header_content {
     text-align: center;
     flex: 1;
-    margin: 0;
+    margin: 0 20px;
+    min-width: 0;
 }
 
 .header_content h1 {
     margin: 0px;
-    font-size: 2.5em;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .header_content p {
     margin: 0;
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .buttons {
     display: flex;
     align-items: center;
     gap: 5px;
-    position: absolute;
-    right: 15px;
+    flex-shrink: 0;
+    min-width: 120px;
+    justify-content: flex-end;
 }
 
 header button {
@@ -74,6 +82,36 @@ header button#green_screen_button {
 
 header button#transparency_button {
     background-color: red;
+}
+
+/* Responsive header for smaller screens */
+@media (max-width: 768px) {
+    .header_content h1 {
+        font-size: clamp(1.4rem, 6vw, 2rem);
+    }
+    
+    .coin_flip_section {
+        min-width: 80px;
+    }
+    
+    .buttons {
+        min-width: 80px;
+        gap: 3px;
+    }
+    
+    header button {
+        padding: 6px;
+        margin: 1px;
+    }
+    
+    #coin_flip_button {
+        padding: 8px 12px;
+        font-size: 0.8em;
+    }
+    
+    #coin_flip_button span {
+        display: none;
+    }
 }
 
 div#app {

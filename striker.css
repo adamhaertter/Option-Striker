@@ -1,6 +1,55 @@
-p, label, h1, h2, h3, h4, h5, h6 {
+/* Body and lightmode styles */
+body {
     font-family: Arial, sans-serif;
+    background-color: oklch(14.1% 0.005 285.823);
+    color: oklch(97% 0 0);
+    margin: 0;
+    padding: 0;
 }
+
+.lightmode {
+    background-color: oklch(97% 0.005 285.823);
+    color: oklch(14.1% 0 0);
+}
+
+/* Header styles */
+header {
+    text-align: center;
+    margin: 0px;;
+    border-bottom: 1px solid gray;
+    background-color: #0e0e11;
+    width:100%;
+}
+
+body.lightmode header  {
+    background-color:  oklch(90.844% 0.0082 286.055);
+}
+
+header h1 {
+    margin: 0px;
+    font-size: 2.5em;
+}
+
+header button {
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    padding: 7px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+header button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+div#app {
+    margin: 20px;
+}
+
+/* Image styles */
 
 .struck {
     filter: grayscale(100%);
@@ -49,7 +98,6 @@ img:hover {
 .output_item label {
     font-weight: bold;
     font-size: 1.1em;
-    color: black;
     margin-top: 5px;
     text-align: center;
 }

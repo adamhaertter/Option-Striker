@@ -1,4 +1,3 @@
-
 const TEST_DATA = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
 const MSS_DATA = ["Bowser Castle", "Bowser Jr. Playroom", "Daisy Cruiser Day", "Daisy Cruiser Night", "DK Jungle Day", "DK Jungle Night", "Luigi Mansion", "Mario Stadium Day", "Mario Stadium Night", "Peach Ice Garden Day", "Peach Ice Garden Night", "Wario City Day", "Wario City Night", "Yoshi Park Day", "Yoshi Park Night"];
 
@@ -59,6 +58,13 @@ function generate() {
     renderImages();
 }
 
+function toggleDarkMode() {
+    document.body.classList.toggle("lightmode");
+    document.header.classList.toggle("lightmode");
+    console.log("Toggled dark mode");
+}
+
 updateData(numOptions, 0);
 renderImages();
 document.getElementById("generate_button").addEventListener("click", generate);
+document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);

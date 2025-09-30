@@ -98,6 +98,102 @@ function strike(div, playerName, isPlayer2 = false) {
     }
 }
 
+function getStrikePattern(n) {
+    if(n == 2) return [1]; // Special case for 2 options
+    if(n == 1) return []; // Special case for 1 option
+    let strikePool = n - 1;
+    let strikeArray = new Array();
+
+    // Save the last strike for later.
+    strikePool -= 1;
+    let backHalfStrikes = new Array();
+    backHalfStrikes.push(1); // Save the final strike for later.
+
+    // Odd overall options
+    if (n%2 === 1 || n > 10) { 
+        strikePool -= 1; // First strike must be single.
+        strikeArray.push(1); 
+    }
+
+    if(n <= 10) {
+        // Under 10 options, build up from 2
+        for (banSize = 2; strikePool - banSize >= 0; banSize++) {
+            console.log(`Loop Trace: P1 banSize=${banSize}, strikePool=${strikePool}`);
+            // Player 1
+            strikeArray.push(banSize);
+            strikePool -= banSize;
+
+            // Does player 2 get to strike?
+            if (strikePool - banSize >= 0) {
+                console.log(`Loop Trace: P2 banSize=${banSize}, strikePool=${strikePool}`);
+                backHalfStrikes.push(banSize);
+                strikePool -= banSize;
+            }
+        }
+    } else {
+        // Scale strike sizes by pool size
+        let S = strikePool / 2;
+
+        for(banSize = 3; strikePool > 0 && banSize >= 1; banSize--) {
+            if(strikePool - (2*banSize) < 0) continue;
+            console.log(`Loop Trace: BOTH banSize=${banSize}, strikePool=${strikePool}`);
+            
+            strikeArray.push(banSize);
+            backHalfStrikes.push(banSize);
+            strikePool -= (2*banSize);
+        }
+    }
+
+    // Add the remaining strikes in the middle of the array
+    if (strikePool > 0) {
+        console.log(`Remaining strikes to allocate: ${strikePool}`);
+        if(strikeArray[0] != 1 && strikePool == 1) {
+            strikeArray.unshift(1);
+        } else {
+            strikeArray.push(strikePool);
+        }
+
+        if(n<= 10) {
+            if(strikeArray[0] != 1 && strikePool == 1) {
+                strikeArray.unshift(1);
+            } else {
+                strikeArray.push(strikePool);
+            }
+        } else {
+            if(strikeArray[0] == 1 && strikePool == 1) {
+                strikeArray[0] = 2;
+            } else {
+                const half = strikePool / 2;
+                strikeArray.push(Math.ceil(half));
+                backHalfStrikes.push(Math.floor(half));
+            }
+        }
+        strikePool = 0;
+    }
+
+    // Append the back half strikes in reverse order
+    backHalfStrikes.reverse().forEach((strike) => {
+        strikeArray.push(strike);
+    });
+
+    return strikeArray;
+}
+
+function displayStrikePattern() {
+    const patternContainer = document.getElementById("strike_pattern_container");
+    patternContainer.innerHTML = ""; // Clear previous pattern
+    const strikeOrder = getStrikePattern(numOptions);
+    strikeOrder.forEach((strike, index) => {
+        const span = document.createElement("span");
+        span.className = "strike_pattern_item";
+        if(index % 2 != 0) {
+            span.classList.add("p2_strike_item");
+        }
+        span.textContent = index != strikeOrder.length-1 ? strike + " - " : strike;
+        patternContainer.appendChild(span);
+    });
+}
+
 function validateInput() {
     const numInput = document.getElementById("num_options");
     let value = parseInt(numInput.value);
@@ -126,10 +222,11 @@ function validateInput() {
     return value;
 }
 
-
 function generate() {
     validateInput(); // Ensure valid value before generating
     renderImages();
+    displayStrikePattern();
+    console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }
 
 function incrementValue() {

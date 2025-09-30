@@ -409,6 +409,31 @@ div.banned-overlay.player2 {
     100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
 }
 
+/* Strike pattern display */
+#recommended_strike_pattern {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#strike_pattern_container {
+    display: inline;
+    justify-content: center;
+    width: auto;
+}
+
+.strike_pattern_item {
+    display: inline;
+    font-size: 2em;
+    font-weight: bold;
+    color: oklch(57.7% 0.245 27.325);
+    min-width: 40px;
+    text-align: center;
+}
+
+.strike_pattern_item.p2_strike_item {
+    color: oklch(54.6% 0.245 262.881);
+}
+
 /* Tips segment styles */
 .tips_segment {
     display: flex;

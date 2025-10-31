@@ -225,6 +225,8 @@ function generate() {
     validateInput(); // Ensure valid value before generating
     renderImages();
     displayStrikePattern();
+    gameNumber = 1;
+    previousPicks = [];
     doDSRBans();
     console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }

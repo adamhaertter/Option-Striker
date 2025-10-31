@@ -449,7 +449,5 @@ document.getElementById("num_options").addEventListener("input", validateInput);
 document.getElementById("num_options").addEventListener("blur", validateInput);
 document.getElementById("num_counterpicks").addEventListener("input", validateInput);
 document.getElementById("num_counterpicks").addEventListener("blur", validateInput);
-document.getElementById("num_games").addEventListener("input", validateInput);
-document.getElementById("num_games").addEventListener("blur", validateInput);
 document.getElementById("increase_btn").addEventListener("click", incrementValue);
 document.getElementById("decrease_btn").addEventListener("click", decrementValue);

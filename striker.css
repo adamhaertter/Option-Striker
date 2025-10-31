@@ -370,6 +370,12 @@ div.banned-overlay.player2 {
     box-shadow: 0 0 15px rgba(0, 89, 255, 0.8);
 }
 
+div.banned-overlay.dsr {
+    background-color: rgba(49, 49, 49, 0.95);
+    border: 2px solid #a3a3a3;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
 /* Protected overlay text for last map protection */
 .protected-overlay {
     position: absolute;

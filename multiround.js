@@ -20,7 +20,7 @@ function updateData(options, dataset, counterpicks) {
     maxDisplay.textContent = data.length;
     
     // Validate current value doesn't exceed new max
-    validateInput();
+    // validateInput();
 }
 
 function selectRandomOptions() {
@@ -184,8 +184,8 @@ function displayStrikePattern() {
     }
 }
 
-function validateInput() {
-    const numInput = document.getElementById("num_options");
+function validateInput(elementId) {
+    const numInput = document.getElementById(elementId);
     let value = parseInt(numInput.value);
     const min = parseInt(numInput.min);
     const max = parseInt(numInput.max);
@@ -208,7 +208,6 @@ function validateInput() {
         numInput.value = min;
     }
     
-    numOptions = value;
     return value;
 }
 
@@ -235,7 +234,7 @@ function doDSRBans() {
 }
 
 function generate() {
-    validateInput(); // Ensure valid value before generating
+    updateData(validateInput("num_options"), 0, validateInput("num_counterpicks")); // Ensure valid value before generating
     renderImages();
     displayStrikePattern();
     gameNumber = 1;
@@ -244,25 +243,25 @@ function generate() {
     console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }
 
-function incrementValue() {
-    const input = document.getElementById("num_options");
+function incrementValue(elementId) {
+    const input = document.getElementById(elementId);
     const currentValue = parseInt(input.value);
     const maxValue = parseInt(input.max);
     
     if (currentValue < maxValue) {
         input.value = currentValue + 1;
-        validateInput();
+        validateInput(elementId);
     }
 }
 
-function decrementValue() {
-    const input = document.getElementById("num_options");
+function decrementValue(elementId) {
+    const input = document.getElementById(elementId);
     const currentValue = parseInt(input.value);
     const minValue = parseInt(input.min);
     
     if (currentValue > minValue) {
         input.value = currentValue - 1;
-        validateInput();
+        validateInput(elementId);
     }
 }
 
@@ -449,5 +448,7 @@ document.getElementById("num_options").addEventListener("input", validateInput);
 document.getElementById("num_options").addEventListener("blur", validateInput);
 document.getElementById("num_counterpicks").addEventListener("input", validateInput);
 document.getElementById("num_counterpicks").addEventListener("blur", validateInput);
-document.getElementById("increase_btn").addEventListener("click", incrementValue);
-document.getElementById("decrease_btn").addEventListener("click", decrementValue);
+document.getElementById("increase_options_btn").addEventListener("click", () => incrementValue("num_options"));
+document.getElementById("decrease_options_btn").addEventListener("click", () => decrementValue("num_options"));
+document.getElementById("increase_counterpicks_btn").addEventListener("click", () => incrementValue("num_counterpicks"));
+document.getElementById("decrease_counterpicks_btn").addEventListener("click", () => decrementValue("num_counterpicks"));

@@ -150,7 +150,7 @@ body.lightmode .number_input_container:focus-within {
     box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
 }
 
-#num_options {
+.number_entry {
     background: var(--overlay-light);
     border: 1px solid var(--border-light);
     border-left: none;
@@ -165,20 +165,20 @@ body.lightmode .number_input_container:focus-within {
     outline: none;
 }
 
-#num_options:focus {
+.number_entry:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-green);
 }
 
 /* Hide default spinners */
-#num_options::-webkit-outer-spin-button,
-#num_options::-webkit-inner-spin-button {
+.number_entry::-webkit-outer-spin-button,
+.number_entry::-webkit-inner-spin-button {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
 }
 
-#num_options[type=number] {
+.number_entry[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
@@ -219,12 +219,12 @@ body.lightmode .number_input_container:focus-within {
 }
 
 /* Light mode overrides */
-body.lightmode #num_options {
+body.lightmode .number_entry {
     background: var(--overlay-dark);
     border-color: var(--border-dark);
 }
 
-body.lightmode #num_options:focus {
+body.lightmode .number_entry:focus {
     background: rgba(0, 0, 0, 0.08);
 }
 

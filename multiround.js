@@ -158,17 +158,30 @@ function getStrikePattern(n) {
 function displayStrikePattern() {
     const patternContainer = document.getElementById("strike_pattern_container");
     patternContainer.innerHTML = ""; // Clear previous pattern
-    const strikeOrder = getStrikePattern(numOptions);
-    strikeOrder.forEach((strike, index) => {
-        const span = document.createElement("span");
-        span.className = "strike_pattern_item";
-        span.title = `Player ${index % 2 == 0 ? "1" : "2"}: ${strike} strike${strike > 1 ? "s" : ""}`;
-        if(index % 2 != 0) {
-            span.classList.add("p2_strike_item");
+    if(gameNumber > 1) {
+        document.getElementById("strike_header").textContent = `Recommended Bans for Game ${gameNumber}:`;
+        const numBans = Math.min(3, numOptions - previousPicks.length - 2); // Ensure at least 2 options remain
+        if (numBans < 0) {
+            numBans = 0; // Always recommend at least 1 ban
         }
-        span.textContent = index != strikeOrder.length-1 ? strike + " - " : strike;
+        const span = document.createElement("span");
+        span.className = "strike_pattern_item ban_strike_item";
+        span.textContent = `${numBans} Bans`;
         patternContainer.appendChild(span);
-    });
+    } else {  
+        document.getElementById("strike_header").textContent = `Recommended Strike Pattern for Game ${gameNumber}:`;
+        const strikeOrder = getStrikePattern(numOptions);
+        strikeOrder.forEach((strike, index) => {
+            const span = document.createElement("span");
+            span.className = "strike_pattern_item";
+            span.title = `Player ${index % 2 == 0 ? "1" : "2"}: ${strike} strike${strike > 1 ? "s" : ""}`;
+            if(index % 2 != 0) {
+                span.classList.add("p2_strike_item");
+            }
+            span.textContent = index != strikeOrder.length-1 ? strike + " - " : strike;
+            patternContainer.appendChild(span);
+        });
+    }
 }
 
 function validateInput() {

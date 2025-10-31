@@ -420,6 +420,7 @@ div.banned-overlay.dsr {
     margin-top: 20px;
     text-align: center;
     justify-content: center;
+    margin-bottom: 10px;
 }
 
 #recommended_strike_pattern h3 {
@@ -444,6 +445,10 @@ div.banned-overlay.dsr {
 
 .strike_pattern_item.p2_strike_item {
     color: oklch(54.6% 0.245 262.881);
+}
+
+.strike_pattern_item.ban_strike_item {
+    color: oklch(66.11% 0.29729 324.03);
 }
 
 /* Tips segment styles */

@@ -6,6 +6,7 @@ let numCounterpicks = 3;
 let gameNumber = 1;
 let data = MSS_DATA
 const datasetControl = [MSS_DATA] // Add more datasets as needed
+let previousPicks = [];
 
 function updateData(options, dataset, counterpicks) {
     numOptions = options
@@ -199,12 +200,23 @@ function validateInput() {
 }
 
 function doDSRBans() {
-    if(gameNumber <= 1) {
-        // Lock all counterpicks
-        const container = document.getElementById("output_segment");
+    const container = document.getElementById("output_segment");
+    if (gameNumber <= 1) {
+        // Lock all counterpicks for game 1
         const allMaps = container.querySelectorAll(".output_item.counterpick");
         allMaps.forEach((div) => {
             strike(div, "LOCKED");
+        });
+    } else {
+        // Lock any maps that have been previously picked (DSR)
+        const allMaps = container.querySelectorAll(".output_item");
+        previousPicks.forEach((mapName) => {
+            allMaps.forEach((div) => {
+                const label = div.querySelector("label");
+                if (label && label.innerText === mapName) {
+                    strike(div, "LOCKED");
+                }
+            });
         });
     }
 }
@@ -300,12 +312,119 @@ function showLastMapProtection(mapDiv) {
     console.log("Cannot ban the last remaining map!");
 }
 
+function unbanAllMaps() {
+    const container = document.getElementById("output_segment");
+    const allMaps = container.querySelectorAll(".output_item.struck");
+    allMaps.forEach((div) => {
+        strike(div, "UNBAN");
+    });
+}
+
+function nextGame() {
+    // Prompt the user to select the winning map from the non-struck options.
+    const container = document.getElementById("output_segment");
+    const allMaps = container.querySelectorAll(".output_item");
+    const remainingMaps = Array.from(allMaps).filter(div => !div.classList.contains("struck"));
+
+    if (remainingMaps.length === 0) {
+        // Nothing to pick
+        console.warn("No remaining maps to pick from.");
+        return;
+    }
+
+    if (remainingMaps.length === 1) {
+        // Only one remaining - automatically choose it
+        const onlyLabel = remainingMaps[0].querySelector("label");
+        advanceGame(onlyLabel ? onlyLabel.innerText : null);
+        return;
+    }
+
+    // Build a list of choice names and open the pick modal
+    const remainingNames = remainingMaps.map(div => {
+        const label = div.querySelector("label");
+        return label ? label.innerText : null;
+    }).filter(Boolean);
+
+    openPickModal(remainingNames, (chosenName) => {
+        // Callback after user picks
+        advanceGame(chosenName);
+    });
+}
+
+function advanceGame(chosenName) {
+    chosenName ? previousPicks.push(chosenName) : null;
+    console.log(`Picked: ${chosenName}`);
+    gameNumber += 1;
+    console.log(`Advancing to Game ${gameNumber}`);
+    unbanAllMaps()
+    displayStrikePattern();
+    doDSRBans();
+}
+
+// Modal for picking the chosen option
+function openPickModal(choices, onPick) {
+    const modal = document.getElementById("pick_modal");
+    const container = document.getElementById("pick_options_container");
+    const closeBtn = document.getElementById("pick_modal_close");
+    container.innerHTML = "";
+
+    // Create a button/card for each choice
+    choices.forEach((name) => {
+        const card = document.createElement("div");
+        card.className = "pick_card";
+
+        const img = document.createElement("img");
+        img.src = `img/${name}.png`;
+        img.alt = name;
+        img.classList.add("pick_image")
+        card.appendChild(img);
+
+        const lbl = document.createElement("label");
+        lbl.innerText = name;
+        lbl.classList.add("pick_label")
+        card.appendChild(lbl);
+
+        card.addEventListener("click", () => {
+            closePickModal();
+            if (typeof onPick === "function") onPick(name);
+        });
+
+        container.appendChild(card);
+    });
+
+    function onClose() {
+        closePickModal();
+    }
+
+    // Show modal
+    modal.style.display = "block";
+
+    // Close handlers
+    closeBtn.onclick = onClose;
+    window.pickModalCloseHandler = (e) => {
+        if (e.target === modal) onClose();
+    };
+    window.addEventListener("click", window.pickModalCloseHandler);
+}
+
+function closePickModal() {
+    const modal = document.getElementById("pick_modal");
+    if (!modal) return;
+    modal.style.display = "none";
+    if (window.pickModalCloseHandler) {
+        window.removeEventListener("click", window.pickModalCloseHandler);
+        delete window.pickModalCloseHandler;
+    }
+}
+
 updateData(numOptions, 0, numCounterpicks);
 renderImages();
+doDSRBans();
 displayStrikePattern();
 
 // Event listeners
 document.getElementById("generate_button").addEventListener("click", generate);
+document.getElementById("next_game_button").addEventListener("click", nextGame);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
 document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);
 document.getElementById("transparency_button").addEventListener("click", toggleTransparency);

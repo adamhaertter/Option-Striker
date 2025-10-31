@@ -70,7 +70,8 @@
             <button class="increment_btn" id="increase_btn" type="button">+</button>
         </div>
         <span class="max_indicator">(max: <span id="max_value">15</span>)</span>
-        <button id="generate_button">Reroll</button>
+        <button id="generate_button" class="major_button">Reroll</button>
+        <button id="next_game_button" class="major_button">Next Game</button>
             
         <div id="output_segment">
         </div>
@@ -113,6 +114,20 @@
             </div>
             <div id="flip_result"></div>
             <button id="flip_again_button">🎲 Flip Again</button>
+        </div>
+    </div>
+
+    <!-- Pick Winner Modal -->
+    <div id="pick_modal" class="modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <h2>Choose Winning Option</h2>
+                <span class="close_button" id="pick_modal_close">&times;</span>
+            </div>
+            <p id="pick_modal_instructions">Select which option was chosen for this game:</p>
+            <div id="pick_options_container">
+                <!-- dynamically filled with choices -->
+            </div>
         </div>
     </div>
 </body>

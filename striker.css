@@ -150,7 +150,7 @@ body.lightmode .number_input_container:focus-within {
     box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
 }
 
-#num_options {
+.number_entry {
     background: var(--overlay-light);
     border: 1px solid var(--border-light);
     border-left: none;
@@ -165,20 +165,20 @@ body.lightmode .number_input_container:focus-within {
     outline: none;
 }
 
-#num_options:focus {
+.number_entry:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--primary-green);
 }
 
 /* Hide default spinners */
-#num_options::-webkit-outer-spin-button,
-#num_options::-webkit-inner-spin-button {
+.number_entry::-webkit-outer-spin-button,
+.number_entry::-webkit-inner-spin-button {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
 }
 
-#num_options[type=number] {
+.number_entry[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
@@ -219,12 +219,12 @@ body.lightmode .number_input_container:focus-within {
 }
 
 /* Light mode overrides */
-body.lightmode #num_options {
+body.lightmode .number_entry {
     background: var(--overlay-dark);
     border-color: var(--border-dark);
 }
 
-body.lightmode #num_options:focus {
+body.lightmode .number_entry:focus {
     background: rgba(0, 0, 0, 0.08);
 }
 
@@ -242,7 +242,7 @@ body.lightmode .increment_btn:active {
 }
 
 /* Generate button */
-#generate_button {
+.major_button {
     background: linear-gradient(135deg, var(--primary-green), #45a049);
     color: white;
     border: none;
@@ -256,13 +256,13 @@ body.lightmode .increment_btn:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#generate_button:hover {
+.major_button:hover {
     background: linear-gradient(135deg, var(--primary-green-hover), var(--primary-green));
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-#generate_button:active {
+.major_button:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -370,6 +370,12 @@ div.banned-overlay.player2 {
     box-shadow: 0 0 15px rgba(0, 89, 255, 0.8);
 }
 
+div.banned-overlay.dsr {
+    background-color: rgba(49, 49, 49, 0.95);
+    border: 2px solid #a3a3a3;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
 /* Protected overlay text for last map protection */
 .protected-overlay {
     position: absolute;
@@ -414,6 +420,7 @@ div.banned-overlay.player2 {
     margin-top: 20px;
     text-align: center;
     justify-content: center;
+    margin-bottom: 10px;
 }
 
 #recommended_strike_pattern h3 {
@@ -440,6 +447,10 @@ div.banned-overlay.player2 {
     color: oklch(54.6% 0.245 262.881);
 }
 
+.strike_pattern_item.ban_strike_item {
+    color: oklch(66.11% 0.29729 324.03);
+}
+
 /* Tips segment styles */
 .tips_segment {
     display: flex;
@@ -461,4 +472,38 @@ div.banned-overlay.player2 {
     max-width: 60%;
     text-align: center;
     justify-content: center;
+}
+
+/* Confirmation modal styles */
+#pick_options_container {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-top:12px;
+}
+
+.pick_image {
+    width:120px;
+    height:auto;
+    border-radius:8px;
+    outline:2px solid #666;
+}
+
+.pick_label {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.pick_card {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    cursor:pointer;
+    min-width:120px;
+}
+
+.pick_card:hover {
+    transform: scale(1.05);
+    transition: var(--transition);
 }

@@ -1,13 +1,17 @@
 const TEST_DATA = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"];
 const MSS_DATA = ["Bowser Castle", "Bowser Jr. Playroom", "Daisy Cruiser Day", "Daisy Cruiser Night", "DK Jungle Day", "DK Jungle Night", "Luigi Mansion", "Mario Stadium Day", "Mario Stadium Night", "Peach Ice Garden Day", "Peach Ice Garden Night", "Wario City Day", "Wario City Night", "Yoshi Park Day", "Yoshi Park Night"];
 
-let numOptions = 5;
+let numOptions = 8;
+let numCounterpicks = 3;
+let gameNumber = 1;
 let data = MSS_DATA
 const datasetControl = [MSS_DATA] // Add more datasets as needed
+let previousPicks = [];
 
-function updateData(options, dataset) {
+function updateData(options, dataset, counterpicks) {
     numOptions = options
     data = datasetControl[dataset]
+    numCounterpicks = counterpicks
     
     const numInput = document.getElementById("num_options");
     const maxDisplay = document.getElementById("max_value");
@@ -16,7 +20,7 @@ function updateData(options, dataset) {
     maxDisplay.textContent = data.length;
     
     // Validate current value doesn't exceed new max
-    validateInput();
+    // validateInput();
 }
 
 function selectRandomOptions() {
@@ -43,6 +47,14 @@ function renderImages() {
         const img = document.createElement("img");
         img.src = `img/${item}.png`;
         img.alt = item;
+
+        if(i >= numOptions - numCounterpicks) {
+            // Mark as counterpick
+            // img.classList.add("counterpick");
+            console.log("Marking " + item + " as counterpick");
+            img.className = "counterpick";
+            div.classList.add("counterpick");
+        }
         
         // Toggle 'struck' class and banned overlay on click
         div.addEventListener("click", () => {
@@ -52,8 +64,9 @@ function renderImages() {
         // Right click
         div.addEventListener("contextmenu", function(event) {
             event.preventDefault(); // Prevent the default context menu
-            strike(div, "P2", true); // Strike as Player 2
+            strike(div, "P2"); // Strike as Player 2
         });
+       
 
         const label = document.createElement("label");
         label.innerText = item;
@@ -63,7 +76,7 @@ function renderImages() {
     });
 }
 
-function strike(div, playerName, isPlayer2 = false) {
+function strike(div, playerName) {
     const container = document.getElementById("output_segment");
     const allMaps = container.querySelectorAll(".output_item");
     const struckMaps = container.querySelectorAll(".output_item.struck");
@@ -90,8 +103,10 @@ function strike(div, playerName, isPlayer2 = false) {
         // Create and add the banned overlay
         const bannedOverlay = document.createElement("div");
         bannedOverlay.classList.add("banned-overlay"); 
-        if(isPlayer2) {
+        if(playerName=="P2") {
             bannedOverlay.classList.add("player2"); // Add player2 class for styling
+        } else if (playerName=="LOCKED") {
+            bannedOverlay.classList.add("dsr"); // Add dsr class for styling
         }
         bannedOverlay.textContent = `BANNED (${playerName})`;
         div.appendChild(bannedOverlay);
@@ -143,21 +158,34 @@ function getStrikePattern(n) {
 function displayStrikePattern() {
     const patternContainer = document.getElementById("strike_pattern_container");
     patternContainer.innerHTML = ""; // Clear previous pattern
-    const strikeOrder = getStrikePattern(numOptions);
-    strikeOrder.forEach((strike, index) => {
-        const span = document.createElement("span");
-        span.className = "strike_pattern_item";
-        span.title = `Player ${index % 2 == 0 ? "1" : "2"}: ${strike} strike${strike > 1 ? "s" : ""}`;
-        if(index % 2 != 0) {
-            span.classList.add("p2_strike_item");
+    if(gameNumber > 1) {
+        document.getElementById("strike_header").textContent = `Recommended Bans for Game ${gameNumber}:`;
+        const numBans = Math.min(3, numOptions - previousPicks.length - 2); // Ensure at least 2 options remain
+        if (numBans < 0) {
+            numBans = 0; // Always recommend at least 1 ban
         }
-        span.textContent = index != strikeOrder.length-1 ? strike + " - " : strike;
+        const span = document.createElement("span");
+        span.className = "strike_pattern_item ban_strike_item";
+        span.textContent = `${numBans} Bans`;
         patternContainer.appendChild(span);
-    });
+    } else {  
+        document.getElementById("strike_header").textContent = `Recommended Strike Pattern for Game ${gameNumber}:`;
+        const strikeOrder = getStrikePattern(numOptions);
+        strikeOrder.forEach((strike, index) => {
+            const span = document.createElement("span");
+            span.className = "strike_pattern_item";
+            span.title = `Player ${index % 2 == 0 ? "1" : "2"}: ${strike} strike${strike > 1 ? "s" : ""}`;
+            if(index % 2 != 0) {
+                span.classList.add("p2_strike_item");
+            }
+            span.textContent = index != strikeOrder.length-1 ? strike + " - " : strike;
+            patternContainer.appendChild(span);
+        });
+    }
 }
 
-function validateInput() {
-    const numInput = document.getElementById("num_options");
+function validateInput(elementId) {
+    const numInput = document.getElementById(elementId);
     let value = parseInt(numInput.value);
     const min = parseInt(numInput.min);
     const max = parseInt(numInput.max);
@@ -180,36 +208,60 @@ function validateInput() {
         numInput.value = min;
     }
     
-    numOptions = value;
     return value;
 }
 
+function doDSRBans() {
+    const container = document.getElementById("output_segment");
+    if (gameNumber <= 1) {
+        // Lock all counterpicks for game 1
+        const allMaps = container.querySelectorAll(".output_item.counterpick");
+        allMaps.forEach((div) => {
+            strike(div, "LOCKED");
+        });
+    } else {
+        // Lock any maps that have been previously picked (DSR)
+        const allMaps = container.querySelectorAll(".output_item");
+        previousPicks.forEach((mapName) => {
+            allMaps.forEach((div) => {
+                const label = div.querySelector("label");
+                if (label && label.innerText === mapName) {
+                    strike(div, "LOCKED");
+                }
+            });
+        });
+    }
+}
+
 function generate() {
-    validateInput(); // Ensure valid value before generating
+    updateData(validateInput("num_options"), 0, validateInput("num_counterpicks")); // Ensure valid value before generating
+    gameNumber = 1;
+    previousPicks = [];
     renderImages();
     displayStrikePattern();
+    doDSRBans();
     console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }
 
-function incrementValue() {
-    const input = document.getElementById("num_options");
+function incrementValue(elementId) {
+    const input = document.getElementById(elementId);
     const currentValue = parseInt(input.value);
     const maxValue = parseInt(input.max);
     
     if (currentValue < maxValue) {
         input.value = currentValue + 1;
-        validateInput();
+        validateInput(elementId);
     }
 }
 
-function decrementValue() {
-    const input = document.getElementById("num_options");
+function decrementValue(elementId) {
+    const input = document.getElementById(elementId);
     const currentValue = parseInt(input.value);
     const minValue = parseInt(input.min);
     
     if (currentValue > minValue) {
         input.value = currentValue - 1;
-        validateInput();
+        validateInput(elementId);
     }
 }
 
@@ -274,12 +326,119 @@ function showLastMapProtection(mapDiv) {
     console.log("Cannot ban the last remaining map!");
 }
 
-updateData(numOptions, 0);
+function unbanAllMaps() {
+    const container = document.getElementById("output_segment");
+    const allMaps = container.querySelectorAll(".output_item.struck");
+    allMaps.forEach((div) => {
+        strike(div, "UNBAN");
+    });
+}
+
+function nextGame() {
+    // Prompt the user to select the winning map from the non-struck options.
+    const container = document.getElementById("output_segment");
+    const allMaps = container.querySelectorAll(".output_item");
+    const remainingMaps = Array.from(allMaps).filter(div => !div.classList.contains("struck"));
+
+    if (remainingMaps.length === 0) {
+        // Nothing to pick
+        console.warn("No remaining maps to pick from.");
+        return;
+    }
+
+    if (remainingMaps.length === 1) {
+        // Only one remaining - automatically choose it
+        const onlyLabel = remainingMaps[0].querySelector("label");
+        advanceGame(onlyLabel ? onlyLabel.innerText : null);
+        return;
+    }
+
+    // Build a list of choice names and open the pick modal
+    const remainingNames = remainingMaps.map(div => {
+        const label = div.querySelector("label");
+        return label ? label.innerText : null;
+    }).filter(Boolean);
+
+    openPickModal(remainingNames, (chosenName) => {
+        // Callback after user picks
+        advanceGame(chosenName);
+    });
+}
+
+function advanceGame(chosenName) {
+    chosenName ? previousPicks.push(chosenName) : null;
+    console.log(`Picked: ${chosenName}`);
+    gameNumber += 1;
+    console.log(`Advancing to Game ${gameNumber}`);
+    unbanAllMaps()
+    displayStrikePattern();
+    doDSRBans();
+}
+
+// Modal for picking the chosen option
+function openPickModal(choices, onPick) {
+    const modal = document.getElementById("pick_modal");
+    const container = document.getElementById("pick_options_container");
+    const closeBtn = document.getElementById("pick_modal_close");
+    container.innerHTML = "";
+
+    // Create a button/card for each choice
+    choices.forEach((name) => {
+        const card = document.createElement("div");
+        card.className = "pick_card";
+
+        const img = document.createElement("img");
+        img.src = `img/${name}.png`;
+        img.alt = name;
+        img.classList.add("pick_image")
+        card.appendChild(img);
+
+        const lbl = document.createElement("label");
+        lbl.innerText = name;
+        lbl.classList.add("pick_label")
+        card.appendChild(lbl);
+
+        card.addEventListener("click", () => {
+            closePickModal();
+            if (typeof onPick === "function") onPick(name);
+        });
+
+        container.appendChild(card);
+    });
+
+    function onClose() {
+        closePickModal();
+    }
+
+    // Show modal
+    modal.style.display = "block";
+
+    // Close handlers
+    closeBtn.onclick = onClose;
+    window.pickModalCloseHandler = (e) => {
+        if (e.target === modal) onClose();
+    };
+    window.addEventListener("click", window.pickModalCloseHandler);
+}
+
+function closePickModal() {
+    const modal = document.getElementById("pick_modal");
+    if (!modal) return;
+    modal.style.display = "none";
+    if (window.pickModalCloseHandler) {
+        window.removeEventListener("click", window.pickModalCloseHandler);
+        delete window.pickModalCloseHandler;
+    }
+}
+
+updateData(numOptions, 0, numCounterpicks);
 renderImages();
+doDSRBans();
 displayStrikePattern();
 
 // Event listeners
 document.getElementById("generate_button").addEventListener("click", generate);
+document.getElementById("next_game_button").addEventListener("click", nextGame);
 document.getElementById("dark_mode_button").addEventListener("click", toggleDarkMode);
 document.getElementById("green_screen_button").addEventListener("click", toggleGreenScreen);
 document.getElementById("transparency_button").addEventListener("click", toggleTransparency);
@@ -287,5 +446,9 @@ document.getElementById("transparency_button").addEventListener("click", toggleT
 // Number input validation and controls
 document.getElementById("num_options").addEventListener("input", validateInput);
 document.getElementById("num_options").addEventListener("blur", validateInput);
-document.getElementById("increase_btn").addEventListener("click", incrementValue);
-document.getElementById("decrease_btn").addEventListener("click", decrementValue);
+document.getElementById("num_counterpicks").addEventListener("input", validateInput);
+document.getElementById("num_counterpicks").addEventListener("blur", validateInput);
+document.getElementById("increase_options_btn").addEventListener("click", () => incrementValue("num_options"));
+document.getElementById("decrease_options_btn").addEventListener("click", () => decrementValue("num_options"));
+document.getElementById("increase_counterpicks_btn").addEventListener("click", () => incrementValue("num_counterpicks"));
+document.getElementById("decrease_counterpicks_btn").addEventListener("click", () => decrementValue("num_counterpicks"));

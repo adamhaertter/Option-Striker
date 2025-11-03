@@ -235,10 +235,10 @@ function doDSRBans() {
 
 function generate() {
     updateData(validateInput("num_options"), 0, validateInput("num_counterpicks")); // Ensure valid value before generating
-    renderImages();
-    displayStrikePattern();
     gameNumber = 1;
     previousPicks = [];
+    renderImages();
+    displayStrikePattern();
     doDSRBans();
     console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }

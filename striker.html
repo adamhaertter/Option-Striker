@@ -45,18 +45,25 @@
 
     <div id="app">        
         <div id="recommended_strike_pattern">
-            <h3>Recommended Strike Pattern:</h3>
+            <h3 id="strike_header">Recommended Strike Pattern:</h3>
             <div id="strike_pattern_container"></div>
         </div>
 
-        <label for="num_options"># to Generate:</label>
+                <label for="num_options">Full List Size: </label>
         <div class="number_input_container">
-            <button class="increment_btn" id="decrease_btn" type="button">−</button>
-            <input type="number" id="num_options" class="number_entry" value="5" min="1" max="15"/>
-            <button class="increment_btn" id="increase_btn" type="button">+</button>
+            <button class="increment_btn" id="decrease_options_btn" type="button">−</button>
+            <input type="number" id="num_options" class="number_entry" value="8" min="1" max="15"/>
+            <button class="increment_btn" id="increase_options_btn" type="button">+</button>
+        </div>
+        <label for="num_counterpicks"># of Counterpicks: </label>
+        <div class="number_input_container">
+            <button class="increment_btn" id="decrease_counterpicks_btn" type="button">−</button>
+            <input type="number" id="num_counterpicks" class="number_entry" value="3" min="0" max="15"/>
+            <button class="increment_btn" id="increase_counterpicks_btn" type="button">+</button>
         </div>
         <span class="max_indicator">(max: <span id="max_value">15</span>)</span>
-        <button id="generate_button" class="major_button">Reroll</button>
+        <button id="generate_button" class="major_button">Reset</button>
+        <button id="next_game_button" class="major_button">Next Game</button>
             
         <div id="output_segment">
         </div>
@@ -66,6 +73,7 @@
         <div class="infobox"> 
             <p>ⓘ Click on items to strike / ban them. Left click for Player 1's bans. Right click for Player 2's bans.</p>
             <p>Click again to unban. The last option is protected, since it will be the deciding option.</p>
+            <p>Counterpick options are only available on Game 2 and later.</p>
         </div>
     </div>
 
@@ -99,6 +107,20 @@
             </div>
             <div id="flip_result"></div>
             <button id="flip_again_button">🎲 Flip Again</button>
+        </div>
+    </div>
+
+    <!-- Pick Winner Modal -->
+    <div id="pick_modal" class="modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <h2>Choose Winning Option</h2>
+                <span class="close_button" id="pick_modal_close">&times;</span>
+            </div>
+            <p id="pick_modal_instructions">Select which option was chosen for this game:</p>
+            <div id="pick_options_container">
+                <!-- dynamically filled with choices -->
+            </div>
         </div>
     </div>
 </body>

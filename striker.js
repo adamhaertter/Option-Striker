@@ -170,7 +170,7 @@ function displayStrikePattern() {
         patternContainer.appendChild(span);
     } else {  
         document.getElementById("strike_header").textContent = `Recommended Strike Pattern for Game ${gameNumber}:`;
-        const strikeOrder = getStrikePattern(numOptions);
+        const strikeOrder = getStrikePattern(numOptions-numCounterpicks); // Dont strike on unavailable counterpicks
         strikeOrder.forEach((strike, index) => {
             const span = document.createElement("span");
             span.className = "strike_pattern_item";
@@ -240,7 +240,6 @@ function generate() {
     renderImages();
     displayStrikePattern();
     doDSRBans();
-    console.log(`Recommended strike order: ${getStrikePattern(numOptions).join(", ")}`);
 }
 
 function incrementValue(elementId) {
